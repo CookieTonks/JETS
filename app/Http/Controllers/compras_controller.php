@@ -70,29 +70,10 @@ class compras_controller extends Controller
         $alta_oc->proveedor = $request->proveedor;
         $alta_oc->usuario_alta = Auth::user()->name;
         $alta_oc->razon = $request->razon;
+        $alta_oc->forma_pago = $request->forma_pago;
+        $alta_oc->condiciones = $request->condiciones;
         $alta_oc->estatus = 'REGISTRADA';
         $alta_oc->save();
-
-        // $partidas = models\materiales::where('estatus', '=', 'SOLICITADA')->where('proveedor', '=', $alta_oc->proveedor)->get();
-
-        // foreach ($partidas as $partida) {
-        //     $partida->oc = $alta_oc->id;
-        //     $partida->fecha_oc = $fecha;
-        //     $partida->personal_oc = Auth::user()->name;
-        //     $partida->estatus = 'ASIGNADA';
-        //     $partida->save();
-
-        //     $ruta = models\jets_rutas::where('ot', '=', $partida->ot)->first();
-        //     $ruta->sistema_compras = 'DONE';
-        //     $ruta->save();
-
-
-        //     $registro_jets = new models\jets_registros();
-        //     $registro_jets->ot = $partida->ot;
-        //     $registro_jets->movimiento = 'COMPRAS - OC';
-        //     $registro_jets->responsable = Auth::user()->name;
-        //     $registro_jets->save();
-        // }
 
 
         return back()->with('mensaje-success', '¡Alta de OC realizada con éxito!');
@@ -182,8 +163,12 @@ class compras_controller extends Controller
 
         $pdf = PDF::loadView('modulos.compras.oc_pdf', compact('oc', 'materiales'));
         return $pdf->stream($oc_id . '.pdf');
+    }
 
+    public function dashboard_administrador_compras()
+    {
+        $notificaciones =  Models\notifications::all();
 
-        dd($materiales_asignados, $ocompras);
+        return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones'));
     }
 }

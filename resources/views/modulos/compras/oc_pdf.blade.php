@@ -128,7 +128,6 @@
                 <td style="text-align: left;" colspan="1"> {{$material->um}} </td>
                 <td style="text-align: left;" colspan="1"> {{$material->cantidad_solicitada}} </td>
                 <td style="text-align: left;" colspan="1"> ${{ number_format($material->pu, 2) }} </td>
-
                 @endforeach
             </tr>
         </tbody>

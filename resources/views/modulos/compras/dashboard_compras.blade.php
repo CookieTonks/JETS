@@ -80,7 +80,7 @@
                             </a>
                             <div class="dropdown-menu" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                                 <a class="dropdown-item" href="{{route ('dashboard_compras')}}">Módulo Compras</a>
-                                <a class="dropdown-item" href="{{route ('buscador_compras')}}">Administracion Compras</a>
+                                <a class="dropdown-item" href="{{route ('dashboard_administrador_compras')}}">Administracion Compras</a>
                                 <a class="dropdown-item" href="{{route ('buscador_compras')}}">Buscador Compras</a>
 
                             </div>
@@ -490,6 +490,14 @@
                                         <option value="JETS">JETS </option>
 
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="forma_pago">Forma de Pago:</label>
+                                    <input class="form-control" id="forma_pago" name="forma_pago" value="" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label for="condiciones">Condiciones:</label>
+                                    <input class="form-control" id="condiciones" name="condiciones" value="" type="text">
                                 </div>
                                 <div class="form-group text-right">
                                     <button class="btn btn-primary" type="submit">Agregar</button>

@@ -62,6 +62,7 @@ Route::get('/dibujos_exports', [App\Http\Controllers\ingenieria_controller::clas
 
 Route::get('/dashboard_compras', [App\Http\Controllers\compras_controller::class, 'dashboard_compras'])->name('dashboard_compras')->middleware('compras_middleware');
 Route::post('/dashboard_compras', [App\Http\Controllers\compras_controller::class, 'alta_oc'])->name('alta_oc')->middleware('compras_middleware');
+Route::get('/dashboard_administrador_compras', [App\Http\Controllers\compras_controller::class, 'dashboard_administrador_compras'])->name('dashboard_administrador_compras')->middleware('compras_middleware');
 
 Route::get('/get-materiales/{id}', [App\Http\Controllers\compras_controller::class, 'getMateriales'])->name('get_materiales')->middleware('compras_middleware');
 Route::post('/asignaroc_materials', [App\Http\Controllers\compras_controller::class, 'asignaroc_materials'])->name('asignaroc_materials')->middleware('compras_middleware');
