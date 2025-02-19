@@ -65,7 +65,8 @@ Route::post('/dashboard_compras', [App\Http\Controllers\compras_controller::clas
 
 Route::get('/get-materiales/{id}', [App\Http\Controllers\compras_controller::class, 'getMateriales'])->name('get_materiales')->middleware('compras_middleware');
 Route::post('/asignaroc_materials', [App\Http\Controllers\compras_controller::class, 'asignaroc_materials'])->name('asignaroc_materials')->middleware('compras_middleware');
-
+Route::get('/oc_pdf/{id}', [App\Http\Controllers\compras_controller::class, 'oc_pdf'])->name('oc_pdf');
+ 
 Route::get('/material_oc/{id}', [App\Http\Controllers\compras_controller::class, 'material_oc'])->name('material_oc')->middleware('compras_middleware');
 Route::post('/material_proveedor/', [App\Http\Controllers\compras_controller::class, 'material_proveedor'])->name('material_proveedor')->middleware('compras_middleware');
 Route::get('/buscador_material/{id}', [App\Http\Controllers\compras_controller::class, 'buscador_material'])->name('buscador_material')->middleware('compras_middleware');

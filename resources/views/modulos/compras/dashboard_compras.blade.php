@@ -240,7 +240,9 @@
                 </div>
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800"> </h1>
-                    <a href="{{route('exportar_compras')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generar reporte</a>
+                    <a href="{{route('exportar_compras')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                        <i class="glyphicon glyphicon-file"></i>
+                        Generar reporte</a>
                 </div>
                 <!-- /Title -->
 
@@ -326,7 +328,7 @@
                                         </button>
 
                                         <!-- Botón para descargar PDF -->
-                                        <a href="" class="btn btn-danger btn-sm">
+                                        <a href="{{route('oc_pdf', $oc->id)}}" class="btn btn-success btn-sm">
                                             <i class="icon-doc"></i>
                                         </a>
                                     </td>

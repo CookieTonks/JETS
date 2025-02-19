@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 
 
@@ -157,5 +158,32 @@ class compras_controller extends Controller
         $material->pu = $request->pu;
         $material->save();
         return back()->with('mensaje-success', '¡Orden de compra asignada con exito!');
+    }
+
+    public function oc_pdf($oc_id)
+    {
+        $oc = Models\ocompras::where('id', '=', $oc_id)->first();
+
+        if ($oc) {
+            $materiales = Models\materiales::where('oc', $oc_id)->get();
+
+            $subtotal = $materiales->sum(function ($material) {
+                return $material->cantidad_solicitada * $material->pu;
+            });
+
+            $iva = $subtotal * 0.16;
+
+            $oc->subtotal = $subtotal;
+            $oc->iva = $iva;
+            $oc->save();
+        }
+
+
+
+        $pdf = PDF::loadView('modulos.compras.oc_pdf', compact('oc', 'materiales'));
+        return $pdf->stream($oc_id . '.pdf');
+
+
+        dd($materiales_asignados, $ocompras);
     }
 }

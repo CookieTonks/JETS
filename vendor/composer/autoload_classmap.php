@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Exports\\tecnicos' => $baseDir . '/app/Exports/tecnicos.php',
     'App\\Http\\Controllers\\Auth\\AuthenticatedSessionController' => $baseDir . '/app/Http/Controllers/Auth/AuthenticatedSessionController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
     'App\\Http\\Controllers\\Auth\\ConfirmablePasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmablePasswordController.php',
@@ -81,6 +82,7 @@ return array(
     'App\\Models\\registros_almacen' => $baseDir . '/app/Models/registros_almacen.php',
     'App\\Models\\registros_compras' => $baseDir . '/app/Models/registros_compras.php',
     'App\\Models\\registros_maquinas' => $baseDir . '/app/Models/registros_maquinas.php',
+    'App\\Models\\registros_tecnicos' => $baseDir . '/app/Models/registros_tecnicos.php',
     'App\\Models\\salidas_embarques' => $baseDir . '/app/Models/salidas_embarques.php',
     'App\\Models\\salidas_produccion' => $baseDir . '/app/Models/salidas_produccion.php',
     'App\\Models\\salidas_tratamientos' => $baseDir . '/app/Models/salidas_tratamientos.php',
