@@ -168,7 +168,12 @@ class compras_controller extends Controller
     public function dashboard_administrador_compras()
     {
         $notificaciones =  Models\notifications::all();
+        $ordersBySupplier = Models\ocompras::select('proveedor', DB::raw('COUNT(*) as total'))
+            ->groupBy('proveedor')
+            ->get();
 
-        return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones'));
+
+
+        return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones', 'ordersBySupplier'));
     }
 }
