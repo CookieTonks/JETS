@@ -25,44 +25,73 @@
     <table class="table table-borderless">
         <thead>
             <tr>
-                <td scope="col" style="font-size:xx-small;"><img src="images/logo.png" width="100px">
-                    <p>EMPRESA S.A DE C.V <br>
-                        MAQUINADOS Y PAILERIA INDUSTRIAL <br>
-                        Direccion, #410 D-7<br>
-                        Parque Destirral Regio, Apodaca, 66636<br>
-                        RFC: 0000000</p>
-                </td>
-                <td scope="col" style="text-align: right; font-size:xx-small;">
-                    <p>Telefono: 00-00-00-00 <br>
+                <td scope="col" style="font-size:xx-small;">
+                    <img src="images/logo.png" width="100px">
+                    <p>JETS MAQUINADOS ESPECIALIZADOS <br>
+                        REGIO PARQUE INDUSTRIAL, 208.<br>
+                        CP.66600 APODACA N.L<br>
                     </p>
-                    <br>
-                    <br>
-                    <br>
+                    <p>Telefono: 8112017841 <br></p>
+
+                </td>
+
+                <td scope="col" style="text-align: right; font-size:xx-small;">
                     <p class="h6" style="text-align: right;">Orden de Compra: {{$oc->id}} </p>
-                    <p class="h7" style="text-align: right;">Comprador: {{$oc->usuario_alta}}</p>
-                    <p class="h7" style="text-align: right;">Fecha: {{$oc->created_at}}</p>
+
+                    <img src="images/iso.png" width="95px">
+                    <p><b>ISO 9001-2015</b></p>
+
                 </td>
             </tr>
         </thead>
     </table>
 
-    <table class="table  table-sm" style="text-align:center;font-size:xx-small;" width="100%">
+    <table class="table table-sm" style="text-align:center;font-size:xx-small;" width="100%">
         <thead style="background-color:rgb(38, 78, 163); color:white;">
             <tr>
-                <th colspan="1" style="text-align:left">OC</th>
-                <th colspan="1" style="text-align:left">PROVEEDOR</th>
-                <th colspan="1" style="text-align:left">DIRECCION DE ENVIO</th>
-
+                <th style="text-align:left;">OC</th>
+                <th style="text-align:left;">COMPRADOR</th>
+                <th style="text-align:left;">EMAIL</th>
+                <th style="text-align:left;">TELEFONO</th>
+                <th style="text-align:left;">FECHA</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td style="text-align: left;" colspan="1"> {{$oc->id}} </td>
+                <td style="text-align:left;">{{$oc->id}}</td>
+                <td style="text-align:left;">{{$oc->usuario_alta}}</td>
+                <td style="text-align:left;">correo@gmail.com</td>
+                <td style="text-align:left;">811135598</td>
+                <td style="text-align:left;">{{$oc->created_at}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+
+    <table class="table table-sm" style="text-align:center;font-size:xx-small;" width="100%">
+        <thead style="background-color:rgb(38, 78, 163); color:white;">
+            <tr>
+                <th colspan="1" style="text-align:left">PROVEEDOR</th>
+                <th colspan="1" style="text-align:left">DATOS DE FACTURACION</th>
+                <th colspan="1" style="text-align:left">DIRECCION DE ENVIO</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
                 <td style="text-align: left;" colspan="1"> {{$oc->proveedor}} </td>
+                <td style="text-align: left;" colspan="1">
+                    @if($oc->razon == "LUIS")
+                    JOSE LUIS SILVA SANTOS, AMAPOLA 625 LOS TREBOLES APODACA N.L C.P 66600, RFC SISL8601078J4
+                    @else
+                    JETS MAQUINADOS ESPECIALIZADOS <br> REGIO PARQUE INDUSTRIAL <br> CP.66600 APODACA N.L
+                    @endif
+                </td>
                 <td style="text-align: left;" colspan="1"> AV.REGIO PARQUE 208, PARQUE INDUSTRIAL REGIO APODACA N.L</td>
             </tr>
         </tbody>
     </table>
+
 
     <table class="table  table-sm" style="text-align:center;font-size:xx-small;" width="100%">
         <thead style="background-color:rgb(38, 78, 163); color:white;">
@@ -84,7 +113,7 @@
         <thead style="background-color:rgb(38, 78, 163); color:white;">
             <tr>
                 <th colspan="1" style="text-align:left">OT</th>
-                <th colspan="1" style="text-align:left">DESCRIPCION</th>
+                <th colspan="1" style="text-align:left">DESCRIPCION PARTIDA</th>
                 <th colspan="1" style="text-align:left">UM</th>
                 <th colspan="1" style="text-align:left">CANT</th>
                 <th colspan="1" style="text-align:left">P/U</th>
@@ -98,7 +127,7 @@
                 <td style="text-align: left;" colspan="1"> {{$material->descripcion}} </td>
                 <td style="text-align: left;" colspan="1"> {{$material->um}} </td>
                 <td style="text-align: left;" colspan="1"> {{$material->cantidad_solicitada}} </td>
-                <td style="text-align: left;" colspan="1"> {{$material->pu}} </td>
+                <td style="text-align: left;" colspan="1"> ${{ number_format($material->pu, 2) }} </td>
 
                 @endforeach
             </tr>
