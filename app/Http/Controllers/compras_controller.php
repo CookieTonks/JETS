@@ -182,8 +182,17 @@ class compras_controller extends Controller
             ->groupBy('estatus')
             ->get();
 
+        $ordersBySupplierStatus = Models\ocompras::select(
+            'proveedor',
+            DB::raw('COUNT(*) as total_asignadas'),
+            DB::raw('SUM(CASE WHEN estatus = "RECIBIDA" THEN 1 ELSE 0 END) as total_recibidas'),
+            DB::raw('ROUND((SUM(CASE WHEN estatus = "RECIBIDA" THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) as porcentaje_recibidas')
+        )
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('proveedor')
+            ->get();
 
-
-        return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones', 'ordersBySupplier'));
+        return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones', 'ordersBySupplier', 'ordersByStatus', 'ordersBySupplierStatus'));
     }
 }

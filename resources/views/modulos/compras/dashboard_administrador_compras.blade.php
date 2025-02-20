@@ -28,6 +28,18 @@
     <link href="../plantilla/vendors/select2/dist/css/select2.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <style>
+        .card-body {
+            height: 400px;
+            /* Ajusta según necesidad */
+        }
+
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+    </style>
+
 </head>
 
 <body>
@@ -238,8 +250,15 @@
 
                 <!-- Title -->
                 <div class="hk-pg-header">
-                    <h4 class="hk-pg-title"><span class="pg-title-icon"><span class="feather-icon"></span></span>Módulo Administrador de compras </h4>
+                    <h4 class="hk-pg-title">
+                        <span class="pg-title-icon">
+                            <span class="feather-icon"></span>
+                        </span>
+                        Módulo Administrador de Compras
+                    </h4>
+                    <p>{{ \Carbon\Carbon::now()->translatedFormat('F Y') }}</p>
                 </div>
+
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
                     <h1 class="h3 mb-0 text-gray-800"> </h1>
                     <a href="{{route('exportar_compras')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -249,11 +268,96 @@
                 <!-- /Title -->
 
             </div>
-            <div class="row">
+            <div class="hk-row" style="height: 100px;">
+                <div class="col-sm-3">
+                    <div class="card-group hk-dash-type-2">
+                        <div class="card card-sm">
+                            <div class="card-body py-2"> <!-- Reducir más el padding vertical -->
+                                <div class="d-flex justify-content-between mb-2"> <!-- Reducir margen inferior aún más -->
+                                    <div>
+                                        <span class="d-block font-14 text-dark font-weight-500">Alta Proveedor</span> <!-- Reducir tamaño de fuente -->
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#alta_cliente"> <!-- Hacer el botón más pequeño -->
+                                            <i class="icon-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="d-block display-4 text-dark mb-2"><span class="counter-anim">20</span></span> <!-- Reducir margen inferior -->
+                                    <small class="d-block"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr class="hr" />
+                <br>
+            </div>
+
+
+
+
+
+            <div class="row" style="padding-top: 25px;">
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
                         <div class="row">
-                            <div class="col-12 col-md-3">
+
+                            <div class="col-xl-4">
+                                <section class="hk-sec-wrapper">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="table-wrap">
+                                                <table id="datable_1" class="table table-hover w-100 display pb-30">
+                                                    <thead class="thead-primary">
+                                                        <tr>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>OC ASIGNADAS</th>
+                                                            <th>OC RECIBIDAS</th>
+                                                            <th>% DESEMPEÑO</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($ordersBySupplierStatus as $oc)
+                                                        @php
+                                                        $color = '';
+                                                        if ($oc->porcentaje_recibidas < 70) {
+                                                            $color='bg-danger text-white' ; // Rojo con texto blanco
+                                                            } elseif ($oc->porcentaje_recibidas < 85) {
+                                                                $color='bg-warning text-dark' ; // Amarillo con texto oscuro
+                                                                } else {
+                                                                $color='bg-success text-white' ; // Verde con texto blanco
+                                                                }
+                                                                @endphp
+                                                                <tr class="{{ $color }}">
+                                                                <td>{{ $oc->proveedor }}</td>
+                                                                <td>{{ $oc->total_asignadas }}</td>
+                                                                <td>{{ $oc->total_recibidas }}</td>
+                                                                <td>{{ $oc->porcentaje_recibidas }}%</td>
+                                                                </tr>
+                                                                @endforeach
+                                                    </tbody>
+
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>OC ASIGNADAS</th>
+                                                            <th>OC RECIBIDAS</th>
+                                                            <th>% DESEMPEÑO</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Modal forms-->
+
+
+                            </div>
+                            <div class="col-12 col-md-4">
                                 <div class="card shadow rounded h-100">
                                     <div class="card-header">
                                         <h5 class="card-title">Órdenes por Proveedor</h5>
@@ -263,7 +367,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3">
+                            <div class="col-12 col-md-4">
                                 <div class="card shadow rounded h-100">
                                     <div class="card-header">
                                         <h5 class="card-title">Material por Estatus (Mensual)</h5>
@@ -273,30 +377,44 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 col-md-3">
-                                <div class="card shadow rounded h-100">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Material por Estatus (Mensual)</h5>
-                                    </div>
+
+
+                            <!-- <div class="col-xl-4">
+                                <div class="card card-sm">
                                     <div class="card-body">
-                                        <canvas id=""></canvas>
+                                        <div class="d-flex justify-content-between mb-5">
+                                            <div>
+                                                <span class="d-block font-15 text-dark font-weight-500">Alta Proveedor</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-light mb-2" data-bs-toggle="modal" data-bs-target="#modalAltaFactura">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-5">
+                                            <div>
+                                                <span class="d-block font-15 text-dark font-weight-500">Registro de Factura</span>
+                                            </div>
+                                            <div>
+                                                <button type="button" class="btn btn-light mb-2" data-bs-toggle="modal" data-bs-target="#modalAltaFactura">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12 col-md-3">
-                                <div class="card shadow rounded h-100">
-                                    <div class="card-header">
-                                        <h5 class="card-title">Material por Estatus (Mensual)</h5>
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id=""></canvas>
-                                    </div>
-                                </div>
-                            </div>
+                            </div> -->
+
                         </div>
                     </section>
                 </div>
             </div>
+
+
+
+
+
 
         </div>
 
@@ -326,6 +444,61 @@
 
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Datos de PHP a JavaScript
+            let ordersBySupplier = @json($ordersBySupplier);
+            let ordersByStatus = @json($ordersByStatus);
+
+            // Extraer datos para el gráfico de barras (Órdenes por proveedor)
+            let supplierLabels = ordersBySupplier.map(item => item.proveedor);
+            let supplierData = ordersBySupplier.map(item => item.total);
+
+            // Configuración del gráfico de barras
+            new Chart(document.getElementById('ordersBySupplierChart'), {
+                type: 'bar',
+                data: {
+                    labels: supplierLabels,
+                    datasets: [{
+                        label: 'Órdenes',
+                        data: supplierData,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Extraer datos para el gráfico de pastel (Órdenes por estatus)
+            let statusLabels = ordersByStatus.map(item => item.estatus);
+            let statusData = ordersByStatus.map(item => item.total);
+
+            // Configuración del gráfico de pastel
+            new Chart(document.getElementById('ordersByStatusChart'), {
+                type: 'pie',
+                data: {
+                    labels: statusLabels,
+                    datasets: [{
+                        data: statusData,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4CAF50', '#FF9800'],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        });
+    </script>
 
 
     <!-- Select2 JavaScript -->
