@@ -269,7 +269,7 @@
                                         <h5 class="card-title">Material por Estatus (Mensual)</h5>
                                     </div>
                                     <div class="card-body">
-                                        <canvas id="materialStatusChart"></canvas>
+                                        <canvas id="ordersByStatusChart"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -279,7 +279,7 @@
                                         <h5 class="card-title">Material por Estatus (Mensual)</h5>
                                     </div>
                                     <div class="card-body">
-                                        <canvas id="proveedoresRatingChart"></canvas>
+                                        <canvas id=""></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -327,90 +327,6 @@
     </div>
 
 
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Datos de ejemplo para el gráfico de órdenes por proveedor
-            var proveedores = ['Proveedor A', 'Proveedor B', 'Proveedor C'];
-            var ordenes = [10, 20, 30];
-
-            // Datos de ejemplo para el gráfico de material por estatus
-            var meses = ['Enero', 'Febrero', 'Marzo', 'Abril'];
-            var pendientes = [5, 8, 3, 10];
-            var asignados = [7, 6, 9, 5];
-            var entregados = [3, 7, 4, 8];
-
-            // Gráfico de Órdenes por Proveedor
-            new Chart(document.getElementById('ordersBySupplierChart'), {
-                type: 'bar',
-                data: {
-                    labels: proveedores,
-                    datasets: [{
-                        label: 'Órdenes',
-                        data: ordenes,
-                        backgroundColor: '#4e73df',
-                        borderColor: '#4e73df',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    }
-                }
-            });
-
-            // Gráfico de Material por Estatus
-            new Chart(document.getElementById('materialStatusChart'), {
-                type: 'line',
-                data: {
-                    labels: meses,
-                    datasets: [{
-                            label: 'Pendiente',
-                            data: pendientes,
-                            borderColor: '#f6c23e',
-                            backgroundColor: 'rgba(246, 194, 62, 0.2)',
-                            borderWidth: 2,
-                            fill: true
-                        },
-                        {
-                            label: 'Asignado',
-                            data: asignados,
-                            borderColor: '#1cc88a',
-                            backgroundColor: 'rgba(28, 200, 138, 0.2)',
-                            borderWidth: 2,
-                            fill: true
-                        },
-                        {
-                            label: 'Entregado',
-                            data: entregados,
-                            borderColor: '#36b9cc',
-                            backgroundColor: 'rgba(54, 185, 204, 0.2)',
-                            borderWidth: 2,
-                            fill: true
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'top'
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    }
-                }
-            });
-        });
-    </script>
 
     <!-- Select2 JavaScript -->
     <script src="../plantilla/vendors/select2/dist/js/select2.full.min.js"></script>

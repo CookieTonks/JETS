@@ -168,8 +168,18 @@ class compras_controller extends Controller
     public function dashboard_administrador_compras()
     {
         $notificaciones =  Models\notifications::all();
+
+        // Órdenes por proveedor del mes actual
         $ordersBySupplier = Models\ocompras::select('proveedor', DB::raw('COUNT(*) as total'))
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
             ->groupBy('proveedor')
+            ->get();
+
+        $ordersByStatus = Models\ocompras::select('estatus', DB::raw('COUNT(*) as total'))
+            ->whereMonth('created_at', date('m'))
+            ->whereYear('created_at', date('Y'))
+            ->groupBy('estatus')
             ->get();
 
 
