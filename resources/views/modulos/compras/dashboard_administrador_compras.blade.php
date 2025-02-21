@@ -278,9 +278,10 @@
                                         <span class="d-block font-14 text-dark font-weight-500">Alta Proveedor</span> <!-- Reducir tamaño de fuente -->
                                     </div>
                                     <div>
-                                        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#alta_cliente"> <!-- Hacer el botón más pequeño -->
+                                        <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#alta_proveedor">
                                             <i class="icon-plus"></i>
                                         </button>
+
                                     </div>
                                 </div>
                                 <div>
@@ -441,6 +442,76 @@
 
     </div>
     <!-- /Main Content -->
+
+
+    <div class="modal fade" id="alta_proveedor" tabindex="-1" role="dialog" aria-labelledby="altaProveedorLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="altaProveedorLabel">Alta de Proveedor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formAltaProveedor">
+                        <div class="form-group">
+                            <label>Nombre del Proveedor</label>
+                            <input type="text" class="form-control" name="nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Término de Pago</label>
+                            <input type="text" class="form-control" name="termino_pago">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoría</label>
+                            <input type="text" class="form-control" name="categoria">
+                        </div>
+                        <div class="form-group">
+                            <label>Calle y Número</label>
+                            <input type="text" class="form-control" name="calle_numero">
+                        </div>
+                        <div class="form-group">
+                            <label>Colonia</label>
+                            <input type="text" class="form-control" name="colonia">
+                        </div>
+                        <div class="form-group">
+                            <label>Municipio</label>
+                            <input type="text" class="form-control" name="municipio">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <input type="text" class="form-control" name="estado">
+                        </div>
+                        <div class="form-group">
+                            <label>Teléfono</label>
+                            <input type="text" class="form-control" name="telefono">
+                        </div>
+                        <div class="form-group">
+                            <label>Contacto</label>
+                            <input type="text" class="form-control" name="contacto">
+                        </div>
+                        <div class="form-group">
+                            <label>Correo Electrónico</label>
+                            <input type="email" class="form-control" name="correo">
+                        </div>
+                        <div class="form-group">
+                            <label>Entrega a Domicilio</label>
+                            <select class="form-control" name="entrega_domicilio">
+                                <option value="Sí">Sí</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" form="formAltaProveedor">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     </div>
 
