@@ -52,7 +52,7 @@ class admin_controller extends Controller
 
         $ordenes_trabajadas = models\production::where('tiempo_asignada', 'LIKE', '%' . $fecha . '%')->count();
 
-        return view('modulos.administrador.dashboard_administrador', compact('conteo_clientes','conteo_proveedores','conteo_usuarios', 'conteo_maquinas','empresas','notificaciones','clientes', 'tecnicos', 'datos_maquina', 'fecha', 'datos_ordenf', 'datos_ordena', 'datos_ordenp', 'maquinas', 'ordenes_asignadas', 'ordenes_finalizadas', 'ordenes_pendientes', 'clientes_ordenes'));
+        return view('modulos.administrador.dashboard_administrador', compact('conteo_clientes', 'conteo_proveedores', 'conteo_usuarios', 'conteo_maquinas', 'empresas', 'notificaciones', 'clientes', 'tecnicos', 'datos_maquina', 'fecha', 'datos_ordenf', 'datos_ordena', 'datos_ordenp', 'maquinas', 'ordenes_asignadas', 'ordenes_finalizadas', 'ordenes_pendientes', 'clientes_ordenes'));
     }
     public function index(Request $request)
     {
@@ -123,8 +123,19 @@ class admin_controller extends Controller
 
     public function alta_proveedor(Request $request)
     {
+
         $proveedor = new  models\proveedor();
-        $proveedor->nombre = $request->proveedor;
+        $proveedor->nombre = $request->nombre;
+        $proveedor->termino_pago = $request->termino_pago;
+        $proveedor->categoria = $request->categoria;
+        $proveedor->calle = $request->calle_numero;
+        $proveedor->colonia = $request->colonia;
+        $proveedor->municipio = $request->municipio;
+        $proveedor->estado = $request->estado;
+        $proveedor->telefono = $request->telefono;
+        $proveedor->contacto = $request->contacto;
+        $proveedor->email = $request->correo;
+        $proveedor->entrega = 1;
         $proveedor->save();
 
         return back()->with('mensaje-success', '¡Nuevo proveedor registrado con éxito!');
@@ -141,6 +152,5 @@ class admin_controller extends Controller
         $maquina->ano = $request->ano;
         $maquina->save();
         return back()->with('mensaje-success', '¡Nueva maquina registrado con éxito!');
-
     }
 }
