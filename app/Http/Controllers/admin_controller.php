@@ -31,8 +31,6 @@ class admin_controller extends Controller
 
 
 
-
-
         $datos_ordena = models\production::where('tiempo_asignada', 'LIKE', '%' . $fecha . '%')->get();
         $datos_ordenf = models\production::where('tiempo_asignada', 'LIKE', '%' . $fecha . '%')->where('tiempo_final', 'LIKE', '%' . $fecha . '%')->get();
         $datos_ordenp = models\production::where('tiempo_asignada', 'LIKE', '%' . $fecha . '%')->where('estatus', '<>', 'Finalizada')->get();
@@ -135,7 +133,7 @@ class admin_controller extends Controller
         $proveedor->telefono = $request->telefono;
         $proveedor->contacto = $request->contacto;
         $proveedor->email = $request->correo;
-        $proveedor->entrega = 1;
+        $proveedor->entrega =  $request->entrega_domicilio;
         $proveedor->save();
 
         return back()->with('mensaje-success', '¡Nuevo proveedor registrado con éxito!');

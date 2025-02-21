@@ -328,9 +328,14 @@
                                         </button>
 
                                         <!-- Botón para descargar PDF -->
-                                        <a href="{{route('oc_pdf', $oc->id)}}" class="btn btn-success btn-sm">
+                                        <a href="{{route('oc_pdf', $oc->id)}}" class="btn btn-info btn-sm">
                                             <i class="icon-doc"></i>
                                         </a>
+
+                                        <a href="{{route('oc_pdf', $oc->id)}}" class="btn btn-success btn-sm">
+                                            <i class="icon-check"></i>
+                                        </a>
+
                                     </td>
                                     <td>{{$oc->id}}</td>
                                     <td>{{$oc->proveedor}}</td>

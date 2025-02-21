@@ -196,9 +196,5 @@ class compras_controller extends Controller
         return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones', 'ordersBySupplier', 'ordersByStatus', 'ordersBySupplierStatus'));
     }
 
-    public function alta_proveedor(Request $request)
-    {
-
-        dd($request);
-    }
+ 
 }

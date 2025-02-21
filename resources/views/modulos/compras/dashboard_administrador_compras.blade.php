@@ -461,7 +461,7 @@
                             <label>Entrega a Domicilio</label>
                             <select class="form-control" name="entrega_domicilio">
                                 <option value=1>Sí</option>
-                                <option value=2>No</option>
+                                <option value=0>No</option>
                             </select>
                         </div>
                     </form>
