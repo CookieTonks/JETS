@@ -380,32 +380,7 @@
                             </div>
 
 
-                            <!-- <div class="col-xl-4">
-                                <div class="card card-sm">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between mb-5">
-                                            <div>
-                                                <span class="d-block font-15 text-dark font-weight-500">Alta Proveedor</span>
-                                            </div>
-                                            <div>
-                                                <button type="button" class="btn btn-light mb-2" data-bs-toggle="modal" data-bs-target="#modalAltaFactura">
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between mb-5">
-                                            <div>
-                                                <span class="d-block font-15 text-dark font-weight-500">Registro de Factura</span>
-                                            </div>
-                                            <div>
-                                                <button type="button" class="btn btn-light mb-2" data-bs-toggle="modal" data-bs-target="#modalAltaFactura">
-                                                    +
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
+                  
 
                         </div>
                     </section>
@@ -500,7 +475,7 @@
                             <select class="form-control" name="entrega_domicilio">
                                 <option value="Sí">Sí</option>
                                 <option value="No">No</option>
-                            </select>
+                            </select>a
                         </div>
                     </form>
                 </div>
