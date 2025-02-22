@@ -475,7 +475,7 @@
                             <select class="form-control" name="entrega_domicilio">
                                 <option value="Sí">Sí</option>
                                 <option value="No">No</option>
-                            </select>a
+                            </select>
                         </div>
                     </form>
                 </div>
