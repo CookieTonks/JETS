@@ -238,7 +238,6 @@
                                         <tbody>
                                             @foreach($comparativas_precios as $comparativa_precio)
                                             <tr>
-
                                                 <td>{{$comparativa_precio->proveedor->nombre}}</td>
                                                 <td>{{$comparativa_precio->precio_unitario}}</td>
                                             </tr>
