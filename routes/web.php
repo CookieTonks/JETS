@@ -67,7 +67,17 @@ Route::get('/dashboard_administrador_compras', [App\Http\Controllers\compras_con
 Route::get('/get-materiales/{id}', [App\Http\Controllers\compras_controller::class, 'getMateriales'])->name('get_materiales')->middleware('compras_middleware');
 Route::post('/asignaroc_materials', [App\Http\Controllers\compras_controller::class, 'asignaroc_materials'])->name('asignaroc_materials')->middleware('compras_middleware');
 Route::get('/oc_pdf/{id}', [App\Http\Controllers\compras_controller::class, 'oc_pdf'])->name('oc_pdf');
- 
+Route::post('/oc_recibida/{id}', [App\Http\Controllers\compras_controller::class, 'oc_recibida'])->name('oc_recibida');
+Route::get('/factura_recibida/{id}', [App\Http\Controllers\compras_controller::class, 'factura_recibida'])->name('factura_recibida');
+Route::post('/certificado_recibida/{id}', [App\Http\Controllers\compras_controller::class, 'certificado_recibida'])->name('certificado_recibida');
+Route::get('/buscar_proveedores/', [App\Http\Controllers\compras_controller::class, 'buscar_proveedores'])->name('buscar_proveedores')->middleware('compras_middleware');
+
+Route::get('/precios_material/{id}', [App\Http\Controllers\compras_controller::class, 'precios_material'])->name('precios_material')->middleware('compras_middleware');
+
+Route::post('/guardar_precios', [App\Http\Controllers\compras_controller::class, 'guardarPrecios'])->name('guardar_precios')->middleware('compras_middleware');
+
+
+
 Route::get('/material_oc/{id}', [App\Http\Controllers\compras_controller::class, 'material_oc'])->name('material_oc')->middleware('compras_middleware');
 Route::post('/material_proveedor/', [App\Http\Controllers\compras_controller::class, 'material_proveedor'])->name('material_proveedor')->middleware('compras_middleware');
 Route::get('/buscador_material/{id}', [App\Http\Controllers\compras_controller::class, 'buscador_material'])->name('buscador_material')->middleware('compras_middleware');

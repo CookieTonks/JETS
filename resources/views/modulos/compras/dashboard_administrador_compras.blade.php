@@ -304,20 +304,22 @@
                 <div class="col-xl-12">
                     <section class="hk-sec-wrapper">
                         <div class="row">
-
                             <div class="col-xl-4">
                                 <section class="hk-sec-wrapper">
                                     <div class="row">
                                         <div class="col-sm">
                                             <div class="table-wrap">
+                                                <h5>EVALUACION PROVEEDOR</h5>
+
                                                 <table id="datable_1" class="table table-hover w-100 display pb-30">
                                                     <thead class="thead-primary">
                                                         <tr>
                                                             <th>PROVEEDOR</th>
                                                             <th>OC ASIGNADAS</th>
                                                             <th>OC RECIBIDAS</th>
+                                                            <th>CERTIFICADO</th>
+                                                            <th>E. CERTIFICADOS</th>
                                                             <th>% DESEMPEÑO</th>
-
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -336,16 +338,20 @@
                                                                 <td>{{ $oc->proveedor }}</td>
                                                                 <td>{{ $oc->total_asignadas }}</td>
                                                                 <td>{{ $oc->total_recibidas }}</td>
+                                                                <td>{{ $oc->total_requieren_certificado }}</td>
+                                                                <td>{{ $oc->total_certificados_registrados }}</td>
+
                                                                 <td>{{ $oc->porcentaje_recibidas }}%</td>
                                                                 </tr>
                                                                 @endforeach
                                                     </tbody>
-
                                                     <tfoot>
                                                         <tr>
                                                             <th>PROVEEDOR</th>
                                                             <th>OC ASIGNADAS</th>
                                                             <th>OC RECIBIDAS</th>
+                                                            <th>S. CERTIFICADO</th>
+                                                            <th>E. CERTIFICADO</th>
                                                             <th>% DESEMPEÑO</th>
                                                         </tr>
                                                     </tfoot>
@@ -355,8 +361,6 @@
                                     </div>
                                 </section>
                                 <!-- Modal forms-->
-
-
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="card shadow rounded h-100">
@@ -378,10 +382,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-                  
-
                         </div>
                     </section>
                 </div>
@@ -389,9 +389,223 @@
 
 
 
+            <div class="row" style="padding-top: 25px;">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+                        <h3>ORDENES DE COMPRA</h3>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <section class="hk-sec-wrapper">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="table-wrap">
+                                                <table id="datable_2" class="table table-hover w-100 display pb-30">
+                                                    <thead class="thead-primary">
+                                                        <tr>
+                                                            <th>OC</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>ESTATUS</th>
+                                                            <th>FECHA RECIBIDA</th>
+                                                            <th>FECHA LIMITE PAGO</th>
+                                                            <th>CONDICION</th>
+                                                            <th>FORMA DE PAGO</th>
+                                                            <th>SUBTOTAL</th>
+                                                            <th>IVA</th>
+                                                            <th>TOTAL</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($ordenes_compras as $ordenes)
+                                                        <tr>
+                                                            <td>{{ $ordenes->id }}</td>
+                                                            <td>{{ $ordenes->proveedor }}</td>
+                                                            <td>{{ $ordenes->estatus }}</td>
+                                                            <td>{{ $ordenes->fecha_recibida }}</td>
+                                                            <td>{{ $ordenes->fecha_pago }}</td>
+                                                            <td>{{ $ordenes->condiciones }}</td>
+                                                            <td>{{ $ordenes->forma_pago }}</td>
+                                                            <td>$ {{ number_format($ordenes->subtotal, 2) }}</td>
+                                                            <td>$ {{ number_format($ordenes->iva, 2) }}</td>
+                                                            <td> ${{ number_format($ordenes->subtotal + $ordenes->iva, 2) }}</td>
+
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>OC</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>ESTATUS</th>
+                                                            <th>FECHA RECIBIDA</th>
+                                                            <th>FECHA LIMITE PAGO</th>
+                                                            <th>CONDICION</th>
+                                                            <th>FORMA DE PAGO</th>
+                                                            <th>SUBTOTAL</th>
+                                                            <th>IVA</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Modal forms-->
+                            </div>
 
 
+                        </div>
+                    </section>
+                </div>
+            </div>
 
+            <div class="row" style="padding-top: 25px;">
+                <div class="col-xl-12">
+                    <section class="hk-sec-wrapper">
+                        <h3>ORDENES PENDIENTES DE PAGO</h3>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <section class="hk-sec-wrapper">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="table-wrap">
+                                                <table id="datable_3" class="table table-hover w-100 display pb-30">
+                                                    <thead class="thead-primary">
+                                                        <tr>
+                                                            <th>OC</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>FACTURA</th>
+                                                            <th>FECHA RECIBIDA</th>
+                                                            <th>FECHA LIMITE PAGO</th>
+                                                            <th>CONDICION</th>
+                                                            <th>FORMA DE PAGO</th>
+                                                            <th>SUBTOTAL</th>
+                                                            <th>IVA</th>
+                                                            <th>TOTAL</th>
+                                                            <th>ACCIONES</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($ordenes_pago as $ordenes)
+                                                        <tr>
+                                                            <td>{{ $ordenes->id }}</td>
+                                                            <td>{{ $ordenes->proveedor }}</td>
+                                                            <td>{{ $ordenes->factura }}</td>
+                                                            <td>{{ $ordenes->fecha_recibida }}</td>
+                                                            <td>{{ $ordenes->fecha_pago }}</td>
+                                                            <td>{{ $ordenes->condiciones }}</td>
+                                                            <td>{{ $ordenes->forma_pago }}</td>
+                                                            <td>$ {{ number_format($ordenes->subtotal, 2) }}</td>
+                                                            <td>$ {{ number_format($ordenes->iva, 2) }}</td>
+                                                            <td> ${{ number_format($ordenes->subtotal + $ordenes->iva, 2) }}</td>
+                                                            <td> <a href="{{route('factura_recibida', $ordenes->id)}}" class="btn btn-success btn-sm">
+                                                                    <i class="icon-check"></i>
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>OC</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>FACTURA</th>
+                                                            <th>FECHA RECIBIDA</th>
+                                                            <th>FECHA LIMITE PAGO</th>
+                                                            <th>CONDICION</th>
+                                                            <th>FORMA DE PAGO</th>
+                                                            <th>SUBTOTAL</th>
+                                                            <th>IVA</th>
+                                                            <th>TOTAL</th>
+                                                            <th>ACCIONES</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Modal forms-->
+                            </div>
+
+                            <div class="col-xl-6">
+                                <section class="hk-sec-wrapper">
+                                    <h3>ORDENES PENDIENTES DE CERTIFICADO</h3>
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <div class="table-wrap">
+                                                <table id="datable_4" class="table table-hover w-100 display pb-30">
+                                                    <thead class="thead-primary">
+                                                        <tr>
+                                                            <th>OC</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>ACCIONES</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($certificados as $certificado)
+                                                        <tr>
+                                                            <td>{{ $certificado->id }}</td>
+                                                            <td>{{ $certificado->proveedor }}</td>
+                                                            <td>
+                                                                <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                                                    data-target="#facturaModal_{{ $certificado->id }}" data-id="{{ $certificado->id }}">
+                                                                    <i class="icon-check"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="facturaModal_{{ $certificado->id }}" tabindex="-1" aria-labelledby="facturaModalLabel_{{ $certificado->id }}" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="facturaModalLabel_{{ $certificado->id }}">Registrar Certificado</h5>
+                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <form id="facturaForm_{{ $certificado->id }}" action="{{ route('certificado_recibida', $certificado->id) }}" method="POST">
+                                                                            @csrf
+                                                                            <input type="hidden" name="oc_id" value="{{ $certificado->id }}">
+
+                                                                            <div class="mb-3">
+                                                                                <label for="certificado_{{ $certificado->id }}" class="form-label">Número de Certificado</label>
+                                                                                <input type="text" class="form-control" id="certificado_{{ $certificado->id }}" name="certificado" required>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                                        <button type="submit" form="facturaForm_{{ $certificado->id }}" class="btn btn-success">Registrar y Confirmar</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                    </tbody>
+
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>OC</th>
+                                                            <th>PROVEEDOR</th>
+                                                            <th>ACCIONES</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- Modal forms-->
+                            </div>
+
+
+                        </div>
+                    </section>
+                </div>
+            </div>
         </div>
 
 
@@ -418,7 +632,7 @@
     </div>
     <!-- /Main Content -->
 
-
+    <!-- Modales -->
     <div class="modal fade" id="alta_proveedor" tabindex="-1" role="dialog" aria-labelledby="altaProveedorLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -429,7 +643,8 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formAltaProveedor">
+                    <form action="{{route('alta_proveedor')}}" method="post" id="formAltaProveedor">
+                        @csrf
                         <div class="form-group">
                             <label>Nombre del Proveedor</label>
                             <input type="text" class="form-control" name="nombre" required>
@@ -473,8 +688,8 @@
                         <div class="form-group">
                             <label>Entrega a Domicilio</label>
                             <select class="form-control" name="entrega_domicilio">
-                                <option value="Sí">Sí</option>
-                                <option value="No">No</option>
+                                <option value=1>Sí</option>
+                                <option value=0>No</option>
                             </select>
                         </div>
                     </form>
@@ -487,8 +702,8 @@
         </div>
     </div>
 
-
     </div>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

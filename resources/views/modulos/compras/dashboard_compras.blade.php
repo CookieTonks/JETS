@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Jets I Dashboard</title>
     <meta name="description" content="A responsive bootstrap 4 admin dashboard template by hencework" />
@@ -271,18 +273,27 @@
                                     @foreach($materiales as $material)
                                     <tr>
                                         <td>
+
                                             <button type="button" class="btn btn-primary" data-toggle="modal"
                                                 data-target="#edicion_material" data-id="{{$material->id}}"
                                                 data-descripcion="{{$material->descripcion}}"
                                                 data-cantidad="{{$material->cantidad_solicitada}}">
                                                 <i class="icon-pencil"></i>
                                             </button>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#asignarOC"
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#asignarOC"
                                                 data-id="{{$material->id}}" data-descripcion="{{$material->descripcion}}" data-cantidad="{{$material->cantidad_solicitada}}">
                                                 <i class="icon-basket"></i>
                                             </button>
 
+
+                                            <a href="{{ route('precios_material', $material->id) }}" class="btn btn-secondary">
+                                                <i class="icon-paper-clip"></i>
+                                            </a>
+
+
+
                                         </td>
+
                                         <td>{{$material->ot}}</td>
                                         <td>{{$material->tipo}}</td>
                                         <td>{{$material->um}}</td>
@@ -291,9 +302,10 @@
                                         <td>{{$material->oc}}</td>
                                         <td>{{$material->proveedor}}</td>
                                         <td>{{$material->salida_produccion}}</td>
-                                        <td>
+                                        <td>{{$material->cantidad_solicitada}}</td>
+                                        <!-- <td>
                                             {{$material->tipo === "TRATAMIENTO EXTERNO" ? $material->cantidad_solicitada : $material->cantidad_almacen}}
-                                        </td>
+                                        </td> -->
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -328,18 +340,57 @@
                                         </button>
 
                                         <!-- Botón para descargar PDF -->
-                                        <a href="{{route('oc_pdf', $oc->id)}}" class="btn btn-info btn-sm">
+                                        <a href="{{ route('oc_pdf', $oc->id) }}" class="btn btn-info btn-sm">
                                             <i class="icon-doc"></i>
                                         </a>
 
-                                        <a href="{{route('oc_pdf', $oc->id)}}" class="btn btn-success btn-sm">
+                                        <!-- Botón para registrar factura -->
+                                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
+                                            data-target="#facturaModal_{{ $oc->id }}" data-id="{{ $oc->id }}">
                                             <i class="icon-check"></i>
-                                        </a>
+                                        </button>
 
                                     </td>
-                                    <td>{{$oc->id}}</td>
-                                    <td>{{$oc->proveedor}}</td>
+                                    <td>{{ $oc->id }}</td>
+                                    <td>{{ $oc->proveedor }}</td>
+                                    <div class="modal fade" id="facturaModal_{{ $oc->id }}" tabindex="-1" role="dialog" aria-labelledby="facturaModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="facturaModalLabel">Entrada OC</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="facturaForm_{{ $oc->id }}" action="{{ route('oc_recibida', $oc->id) }}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" id="oc_id" name="oc_id" value="{{ $oc->id }}">
+
+                                                        <div class="mb-3">
+                                                            <label for="numero_factura" class="form-label">Número de Factura</label>
+                                                            <input type="text" class="form-control" id="numero_factura" name="numero_factura" required>
+                                                        </div>
+
+                                                        <div class="mb-3 form-check">
+                                                            <input type="checkbox" class="form-check-input" id="req_certificado" name="req_certificado" value="1">
+                                                            <label class="form-check-label" for="req_certificado">¿Requiere certificado?</label>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                                    <button type="submit" form="facturaForm_{{ $oc->id }}" class="btn btn-success">Registrar y Confirmar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </tr>
+
+                                <!-- Modal para registrar factura (inside the foreach loop for each OC) -->
+
                                 @endforeach
                             </tbody>
                         </table>
@@ -366,22 +417,11 @@
                                     </div>
                                     <div class="col-md-8 form-group">
                                         <label for="dibujo">Descripcion</label>
-                                        <input class="form-control" id="descripcion" name="descripcion" placeholder="" value="" type="text" readonly>
+                                        <input class="form-control" id="descripcion" name="descripcion" value="" type="text">
                                     </div>
                                     <div class="col-md-4 form-group">
                                         <label for="dibujo">Cantidad</label>
                                         <input class="form-control" id="cantidad_solicitada" name="cantidad_solicitada" placeholder="" value="" type="text">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 form-group">
-                                        <label for="dibujo">Proveedores</label>
-                                        <label for="proveedor">Proveedor</label>
-                                        <select name="proveedor" class="form-control custom-select d-block w-100" id="vendedor">
-                                            @foreach ($proveedores as $proveedor)
-                                            <option value="{{$proveedor->nombre}}"> {{$proveedor->nombre}} </option>
-                                            @endforeach
-                                        </select>
                                     </div>
                                 </div>
 
@@ -500,10 +540,7 @@
                                     <label for="forma_pago">Forma de Pago:</label>
                                     <input class="form-control" id="forma_pago" name="forma_pago" value="" type="text">
                                 </div>
-                                <div class="form-group">
-                                    <label for="condiciones">Condiciones:</label>
-                                    <input class="form-control" id="condiciones" name="condiciones" value="" type="text">
-                                </div>
+
                                 <div class="form-group text-right">
                                     <button class="btn btn-primary" type="submit">Agregar</button>
                                 </div>
@@ -607,7 +644,6 @@
 
     </div>
 
-
     <script>
         $(document).ready(function() {
             $('#edicion_material').on('show.bs.modal', function(event) {
@@ -619,10 +655,10 @@
 
 
                 var modal = $(this)
-                modal.find('.modal-title').text('Edicion de material:')
+                modal.find('.modal-title').text('Edicion de material')
                 modal.find('#id').val(id)
                 modal.find('#descripcion').val(descripcion)
-                modal.find('#cantidad').val(cantidad)
+                modal.find('#cantidad_solicitada').val(cantidad)
 
 
 

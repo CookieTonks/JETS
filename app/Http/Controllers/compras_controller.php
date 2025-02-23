@@ -63,20 +63,19 @@ class compras_controller extends Controller
 
     public function alta_oc(Request $request)
     {
+        try {
+            $alta_oc = new models\ocompras();
+            $alta_oc->proveedor = $request->proveedor;
+            $alta_oc->usuario_alta = Auth::user()->name;
+            $alta_oc->razon = $request->razon;
+            $alta_oc->forma_pago = $request->forma_pago;
+            $alta_oc->estatus = 'REGISTRADA';
+            $alta_oc->save();
 
-        $fecha = Carbon::now();
-
-        $alta_oc = new models\ocompras();
-        $alta_oc->proveedor = $request->proveedor;
-        $alta_oc->usuario_alta = Auth::user()->name;
-        $alta_oc->razon = $request->razon;
-        $alta_oc->forma_pago = $request->forma_pago;
-        $alta_oc->condiciones = $request->condiciones;
-        $alta_oc->estatus = 'REGISTRADA';
-        $alta_oc->save();
-
-
-        return back()->with('mensaje-success', '¡Alta de OC realizada con éxito!');
+            return back()->with('mensaje-success', '¡Alta de OC realizada con éxito!');
+        } catch (\Exception $e) {
+            return back()->with('mensaje-error', '¡Error al registrar OC, por favor intenta de nuevo!');
+        }
     }
 
 
@@ -94,14 +93,22 @@ class compras_controller extends Controller
     public function material_proveedor(Request $request)
     {
 
+        try {
+            $material =  Models\materiales::where('id', '=', $request->id)->first();
+            $material->cantidad_solicitada = $request->cantidad_solicitada;
+            $material->descripcion = $request->descripcion;
+            $material->save();
 
-        $asignar_oc =  Models\materiales::where('id', '=', $request->id)->first();
-        $asignar_oc->cantidad_solicitada = $request->cantidad_solicitada;
-        $asignar_oc->proveedor = $request->proveedor;
-        $asignar_oc->save();
+            $registro_jets = new models\jets_registros();
+            $registro_jets->ot = $material->ot;
+            $registro_jets->movimiento = 'COMPRAS - EDICION';
+            $registro_jets->responsable = Auth::user()->name;
+            $registro_jets->save();
 
-
-        return back()->with('mensaje-success', '¡Material agregado a la orden de compra con exito!');
+            return back()->with('mensaje-success', '¡Material agregado a la orden de compra con exito!');
+        } catch (\Throwable $th) {
+            return back()->with('mensaje-error', '¡Error al editar el material, por favor intenta de nuevo!');
+        }
     }
 
     public function edicion_material(Request $request)
@@ -127,8 +134,6 @@ class compras_controller extends Controller
     public function getMateriales($id)
     {
         $materiales_asignados = Models\materiales::where('oc', $id)->get();
-
-
         return response()->json($materiales_asignados);
     }
 
@@ -143,26 +148,76 @@ class compras_controller extends Controller
 
     public function oc_pdf($oc_id)
     {
-        $oc = Models\ocompras::where('id', '=', $oc_id)->first();
+        try {
+            $oc = Models\ocompras::where('id', '=', $oc_id)->first();
 
-        if ($oc) {
-            $materiales = Models\materiales::where('oc', $oc_id)->get();
+            if ($oc) {
 
-            $subtotal = $materiales->sum(function ($material) {
-                return $material->cantidad_solicitada * $material->pu;
-            });
+                $materiales = Models\materiales::where('oc', $oc_id)->get();
 
-            $iva = $subtotal * 0.16;
+                $subtotal = $materiales->sum(function ($material) {
+                    return $material->cantidad_solicitada * $material->pu;
+                });
 
-            $oc->subtotal = $subtotal;
-            $oc->iva = $iva;
-            $oc->save();
+                $iva = $subtotal * 0.16;
+
+                $oc->subtotal = $subtotal;
+                $oc->iva = $iva;
+                $oc->save();
+
+                $proveedor = Models\proveedor::where('nombre', '=', $oc->proveedor)->first();
+
+
+                $pdf = PDF::loadView('modulos.compras.oc_pdf', compact('oc', 'materiales', 'proveedor'));
+                return $pdf->stream($oc_id . '.pdf');
+            }
+        } catch (\Exception $e) {
+            return back()->with('mensaje-error', '¡Error al generar PDF de OC, por favor intenta de nuevo!');
         }
+    }
 
 
+    public function oc_recibida($oc_id, Request $request)
+    {
 
-        $pdf = PDF::loadView('modulos.compras.oc_pdf', compact('oc', 'materiales'));
-        return $pdf->stream($oc_id . '.pdf');
+        try {
+            $oc = Models\ocompras::where('id', '=', $oc_id)->first();
+            $oc->estatus = 'RECIBIDA';
+            $oc->factura = $request->numero_factura;
+            $oc->fecha_recibida = Carbon::now();
+            $oc->req_certificado = $request->has('req_certificado') ? 1 : 0;
+            $proveedor = Models\proveedor::where('nombre', '=', $oc->proveedor)->first();
+            $oc->fecha_pago = Carbon::now()->addDays($proveedor->termino_pago);
+            $oc->save();
+            return back()->with('mensaje-success', '¡Orden de compra recibida con exito!');
+        } catch (\Exception $e) {
+            return back()->with('mensaje-error', '¡Error al registrar entrada de OC, por favor intenta de nuevo!');
+        }
+    }
+
+
+    public function factura_recibida($oc_id, Request $request)
+    {
+        $oc = Models\ocompras::where('id', '=', $oc_id)->first();
+        $oc->estatus = 'PAGADA';
+        $oc->fecha_pagada = Carbon::now();
+        $oc->save();
+        return back()->with('mensaje-success', '¡Orden de compra recibida con exito!');
+    }
+
+
+    public function certificado_recibida($oc_id, Request $request)
+    {
+
+        try {
+            $oc = Models\ocompras::where('id', '=', $oc_id)->first();
+            $oc->req_certificado = 2;
+            $oc->certificado = $request->certificado;
+            $oc->save();
+            return back()->with('mensaje-success', '¡Certificado de Orden de compra registrada con exito!');
+        } catch (\Exception $e) {
+            return back()->with('mensaje-error', '¡Error al registrar certificado de OC, por favor intenta de nuevo!');
+        }
     }
 
     public function dashboard_administrador_compras()
@@ -185,16 +240,75 @@ class compras_controller extends Controller
         $ordersBySupplierStatus = Models\ocompras::select(
             'proveedor',
             DB::raw('COUNT(*) as total_asignadas'),
-            DB::raw('SUM(CASE WHEN estatus = "RECIBIDA" THEN 1 ELSE 0 END) as total_recibidas'),
-            DB::raw('ROUND((SUM(CASE WHEN estatus = "RECIBIDA" THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) as porcentaje_recibidas')
+            DB::raw('SUM(CASE WHEN estatus IN ("RECIBIDA", "PAGADA") THEN 1 ELSE 0 END) as total_recibidas'),
+            DB::raw('ROUND((SUM(CASE WHEN estatus IN ("RECIBIDA", "PAGADA") THEN 1 ELSE 0 END) / COUNT(*)) * 100, 2) as porcentaje_recibidas'),
+            DB::raw('SUM(CASE WHEN req_certificado IN (1, 2) THEN 1 ELSE 0 END) as total_requieren_certificado'),
+            DB::raw('SUM(CASE WHEN req_certificado = 2 THEN 1 ELSE 0 END) as total_certificados_registrados')
         )
             ->whereMonth('created_at', date('m'))
             ->whereYear('created_at', date('Y'))
             ->groupBy('proveedor')
             ->get();
 
-        return view('modulos.compras.dashboard_administrador_compras', compact('notificaciones', 'ordersBySupplier', 'ordersByStatus', 'ordersBySupplierStatus'));
+
+
+
+        $certificados = models\OCompras::where('req_certificado', '=', '1')
+            ->get();
+
+        $ordenes_compras = models\OCompras::whereMonth('created_at', date('m'))->whereYear('created_at', date('Y'))->get();
+
+
+        $ordenes_pago = models\OCompras::where('estatus', '<>', 'PAGADA')
+            ->orderBy('fecha_pago', 'asc') // 'asc' para la más cercana primero
+            ->get();
+        return view('modulos.compras.dashboard_administrador_compras', compact('certificados', 'ordenes_pago', 'ordenes_compras', 'notificaciones', 'ordersBySupplier', 'ordersByStatus', 'ordersBySupplierStatus'));
     }
 
- 
+    public function buscar_proveedores(Request $request)
+    {
+        $categoria = $request->input('categoria');
+
+        $proveedores = models\Proveedor::where('categoria', 'LIKE', "%$categoria%")->get();
+
+        return response()->json($proveedores);
+    }
+
+
+    public function precios_material($material_id)
+    {
+        $material = models\materiales::findOrFail($material_id);
+
+        $comparativas_precios = models\PrecioMaterial::where('material_id', '=', $material_id)->get();
+
+
+        return view('modulos.compras.dashboard_material_proveedores', compact('material', 'comparativas_precios'));
+    }
+
+
+    public function guardarPrecios(Request $request)
+    {
+
+
+        try {
+            foreach ($request->comparativa as $registro) {
+
+                models\PrecioMaterial::updateOrCreate(
+                    [
+                        'material_id' => $request->material,
+                        'proveedor_id' => $registro['proveedor'],
+                        'precio_unitario' => $registro['pu']
+
+                    ]
+                );
+            }
+
+            return back()->with('mensaje-success', '¡Comparativa de material registrado con exito!');
+        } catch (\Throwable $th) {
+            return back()->with('mensaje-error', '¡Error al registrar comparativa de precios, por favor intenta de nuevo!');
+        }
+
+
+        return response()->json(['message' => 'Precios guardados correctamente'], 200);
+    }
 }

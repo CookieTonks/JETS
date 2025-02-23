@@ -31,7 +31,6 @@
                         REGIO PARQUE INDUSTRIAL, 208.<br>
                         CP.66600 APODACA N.L<br>
                     </p>
-                    <p>Telefono: 8112017841 <br></p>
 
                 </td>
 
@@ -52,16 +51,14 @@
                 <th style="text-align:left;">OC</th>
                 <th style="text-align:left;">COMPRADOR</th>
                 <th style="text-align:left;">EMAIL</th>
-                <th style="text-align:left;">TELEFONO</th>
                 <th style="text-align:left;">FECHA</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td style="text-align:left;">{{$oc->id}}</td>
-                <td style="text-align:left;">{{$oc->usuario_alta}}</td>
-                <td style="text-align:left;">correo@gmail.com</td>
-                <td style="text-align:left;">811135598</td>
+                <td style="text-align:left;">{{ auth()->user()->name }}</td>
+                <td style="text-align:left;">{{ auth()->user()->email }}</td>
                 <td style="text-align:left;">{{$oc->created_at}}</td>
             </tr>
         </tbody>
@@ -104,7 +101,7 @@
         <tbody>
             <tr>
                 <td style="text-align: left;" colspan="1"> {{$oc->forma_pago}} </td>
-                <td style="text-align: left;" colspan="1"> {{$oc->condiciones}} </td>
+                <td style="text-align: left;" colspan="1"> {{$proveedor->termino_pago}} DIAS </td>
             </tr>
         </tbody>
     </table>
@@ -121,15 +118,15 @@
             </tr>
         </thead>
         <tbody>
+            @foreach($materiales as $material)
             <tr>
-                @foreach($materiales as $material)
                 <td style="text-align: left;" colspan="1"> {{$material->ot}} </td>
                 <td style="text-align: left;" colspan="1"> {{$material->descripcion}} </td>
                 <td style="text-align: left;" colspan="1"> {{$material->um}} </td>
                 <td style="text-align: left;" colspan="1"> {{$material->cantidad_solicitada}} </td>
                 <td style="text-align: left;" colspan="1"> ${{ number_format($material->pu, 2) }} </td>
-                @endforeach
             </tr>
+            @endforeach
         </tbody>
     </table>
 
@@ -176,8 +173,11 @@
     <table class="table table-sm" style="font-size: xx-small; width: 100%; margin-top: 30px;">
         <tbody>
             <tr>
-                <td><strong>AUTORIZA:</strong> ______________________________________</td>
-                <td><strong>FIRMA:</strong> ________________________________________</td>
+                <td><strong>AUTORIZA:</strong> {{ auth()->user()->name }} </td>
+            </tr>
+            <tr>
+                <p> <b>Terminos y Condiciones:</b> www.maquinadosjets.com/terminos_y_condiciones <br></p>
+
             </tr>
         </tbody>
     </table>
