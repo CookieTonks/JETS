@@ -285,7 +285,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <span class="d-block display-4 text-dark mb-2"><span class="counter-anim">20</span></span> <!-- Reducir margen inferior -->
+                                    <span class="d-b    lock display-4 text-dark mb-2"><span class="counter-anim"></span></span> <!-- Reducir margen inferior -->
                                     <small class="d-block"></small>
                                 </div>
                             </div>
